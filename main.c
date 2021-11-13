@@ -5,18 +5,18 @@
 typedef int(__stdcall *type)(void *hdc, void *gamma_ramp);
 
 int main(int argc, char *argv[]) {
-    int gamma            = 128;
-    int gamma_percentage = 50;  // i should prob. calculate here
+    int gamma_percentage = 50;
     if (argc == 2) {
         gamma_percentage = atoi(argv[1]);
         if (gamma_percentage > 100 || gamma_percentage < 15) {
             printf("[-] please enter a value between 15 and 100.\n");
             return 1;
         }
-
-        float tmp = ((float)gamma_percentage / 100) * 256;  // percentage calculation
-        gamma     = (int)tmp;
     }
+
+    float tmp   = ((float)gamma_percentage / 100) * 256;  // percentage calculation
+    int   gamma = (int)tmp;
+
     HMODULE h_gdi32 = LoadLibrary("gdi32.dll");
     if (!h_gdi32) {
         printf("[-] couldn't get gdi32.dll\n");
@@ -32,8 +32,8 @@ int main(int argc, char *argv[]) {
     get_gamma(cur_hdc, &gamma_table);
 
     // calculate percentage of gamma_table (random point in it, rn)
-    int   check = 181;  // more random than thought of tbh
-    float tmp   = (((float)gamma_table[0][check] / check - 128) / 256) * 100;
+    int check = 181;  // more random than thought of tbh
+    tmp       = (((float)gamma_table[0][check] / check - 128) / 256) * 100;
     // v = (t[c][i] / i) - 128; (c = color)
 
     printf("[+] before screen brightness: %i%%\n", (int)ceilf(tmp));  // always round up
