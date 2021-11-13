@@ -23,8 +23,8 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    type get_gamma = GetProcAddress(h_gdi32, "GetDeviceGammaRamp");
-    type set_gamma = GetProcAddress(h_gdi32, "SetDeviceGammaRamp");
+    type get_gamma = (type)GetProcAddress(h_gdi32, "GetDeviceGammaRamp");
+    type set_gamma = (type)GetProcAddress(h_gdi32, "SetDeviceGammaRamp");
 
     HDC cur_hdc = GetDC(NULL);
 
